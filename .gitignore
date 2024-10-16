@@ -1,0 +1,8 @@
+config.ini
+test
+test.c
+shared-test.c
+shared-test
+plf
+obj/
+bin/
