@@ -8,8 +8,6 @@ build-objects:
 	gcc -c $(FLAGS) -Isrc/include/ src/util.c -o obj/util.o
 
 build-lib: build-objects
-	sudo cp -r src/include/inip/ /usr/lib/include/inip/
-	sudo chmod 755 /usr/lib/include/inip/ 
 	ar rcs bin/libinip.a $(OBJECTS)
 
 build-test:
@@ -22,13 +20,15 @@ shared-lib:
 	gcc -shared $(OBJECTS) -o bin/shared/libinip.so
 
 shared-test:
-	gcc shared-test.c -linip -o shared-test
+	gcc shared-test.c -o shared-test -linip -Isrc/include/
 
 install: 
 	sudo cp bin/shared/libinip.so /usr/lib
-	sudo cp -r src/include/inip/ /usr/lib/include/inip/
-	sudo chmod 755 /usr/lib/include/inip/ 
+	sudo cp bin/libinip.a /usr/lib
+	sudo cp -r src/include/* /usr/lib/include/
+	sudo chmod 755 /usr/lib/include/ 
 	sudo chmod 755 /usr/lib/libinip.so
+	sudo chmod 755 /usr/lib/libinip.a
 
 valgrind-clean:
 	rm -f vgcore.*

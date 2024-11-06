@@ -43,3 +43,4 @@ struct Token {
 INI* load_ini (const char* filepath);
 Hashtable* get_section (INI* ini, char* obj_name);
 String* get_val (Hashtable* ini, char* val_name);
+void free_ini(INI* ini);

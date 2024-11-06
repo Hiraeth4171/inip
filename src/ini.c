@@ -207,6 +207,21 @@ Hashtable* get_section (INI* ini, char* obj_name) {
     return ini->items[i];
 }
 
+void free_ini(INI* ini) {
+    for (size_t i = 0; i < ini->length; ++i) {
+        if (ini->items[i] == NULL) continue;
+        for (size_t j = 0; j < ini->items[i]->length; ++j) {
+            if (ini->items[i]->items[j] == NULL) continue;
+            free(ini->items[i]->items[j]->key.data);
+            free(ini->items[i]->items[j]->val.data);
+            free(ini->items[i]->items[j]);
+        }
+        free(ini->items[i]->name.data);
+        free(ini->items[i]);
+    }
+    free(ini);
+}
+
 String* get_val (Hashtable* section, char* key) {
     return &hashtable_get(section, key)->val;
     return NULL;
