@@ -24,7 +24,6 @@ char* lex(char* buff) {
     buff = realloc(buff, i+2); // MEMORY_CHECK MACRO
     buff[i] = '\n';
     buff[i+1] = '\0';
-    printf("%s\n", buff);
     return buff;
 }
 
