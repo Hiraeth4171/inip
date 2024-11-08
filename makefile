@@ -17,7 +17,7 @@ shared: FLAGS = -fPIC -ggdb
 shared: build-objects shared-lib install shared-test
 
 shared-lib:
-	gcc -shared $(OBJECTS) -o bin/shared/libinip.so
+	gcc -shared $(FLAGS) $(OBJECTS) -o bin/shared/libinip.so
 
 shared-test:
 	gcc shared-test.c -o shared-test -linip -Isrc/include/
@@ -26,7 +26,7 @@ install:
 	sudo cp bin/shared/libinip.so /usr/lib
 	sudo cp bin/libinip.a /usr/lib
 	sudo cp -r src/include/* /usr/lib/include/
-	sudo chmod 755 /usr/lib/include/ 
+	sudo chmod 755 /usr/lib/include/inip/
 	sudo chmod 755 /usr/lib/libinip.so
 	sudo chmod 755 /usr/lib/libinip.a
 

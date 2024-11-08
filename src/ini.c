@@ -14,12 +14,17 @@ char* lex(char* buff) {
             while(*ptr != '\n') ptr++;
             ptr++;
         }
+        if (*ptr == '\n') {
+            while(*ptr == '\n') ptr++;
+            ptr--;
+        }
         if (*ptr == '"') in_str_flag ^= 1;
         buff[i] = *ptr;
     }
     buff = realloc(buff, i+2); // MEMORY_CHECK MACRO
     buff[i] = '\n';
     buff[i+1] = '\0';
+    printf("%s\n", buff);
     return buff;
 }
 
