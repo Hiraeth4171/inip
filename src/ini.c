@@ -70,13 +70,16 @@ void hashtable_add(Hashtable* section, Pair pair) {
 }
 
 Pair* hashtable_get(Hashtable* section, char* key) {
+    if (section == NULL) return NULL;
     size_t i = hash_function(key, section->length);
+    size_t checked_all_count = 0;
     while (section->items[i] != NULL) {
         if(str_cmp(section->items[i]->key.data, key) == 0) return section->items[i];
+        if (checked_all_count++ >= section->length) return NULL;
         i++;
         if (i >= section->length) i = 0;
     }
-    return section->items[i];
+    return NULL;
 }
 
 Hashtable* ast_section(Token* tokens) {
@@ -150,9 +153,9 @@ INI* load_ini (const char* filepath) {
 #define TOKENS_SIZE 16
 
 void add_token(Token** tokens, size_t* tokens_cap, size_t* len, Token token) {
-    if (*len > *tokens_cap) {
+    if (*len >= *tokens_cap) {
         *tokens_cap += TOKENS_SIZE;
-        Token* tmp = realloc(tokens, *tokens_cap * sizeof(Token));
+        Token* tmp = realloc(*tokens, (*tokens_cap * sizeof(Token)));
         if (tmp == NULL) exit(-1);
         *tokens = tmp;
     }
@@ -192,7 +195,9 @@ Token* tokenize(char* buff) {
                 char* val = match_until_opts_but_better(ptr, "\n\"", len);
                 if (*(ptr+*len) == '"') ptr++;
                 ptr+=*len+1;
-                add_token(&tokens, tokens_cap, length, (Token){.type=PAIR, .pair=(Pair){.key=(String){.data=str,.size=key_len}, .val=(String){.data=val,.size=*len}}});
+                if (str[0] != ' ' || str[0] != '\n') {
+                    add_token(&tokens, tokens_cap, length, (Token){.type=PAIR, .pair=(Pair){.key=(String){.data=str,.size=key_len}, .val=(String){.data=val,.size=*len}}});
+                }
                 break;
         }
     }
@@ -227,6 +232,7 @@ void free_ini(INI* ini) {
 }
 
 String* get_val (Hashtable* section, char* key) {
-    return &hashtable_get(section, key)->val;
-    return NULL;
+    Pair* pair =hashtable_get(section, key);
+    if (pair == NULL) return NULL;
+    else return &pair->val;
 }
