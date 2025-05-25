@@ -3,6 +3,9 @@ OBJECTS = obj/ini.o obj/util.o
 build: FLAGS = -ggdb 
 build: build-lib build-test
 
+setup:
+	mkdir -p obj bin
+
 build-objects:
 	gcc -c $(FLAGS) -Isrc/include/ src/ini.c -o obj/ini.o
 	gcc -c $(FLAGS) -Isrc/include/ src/util.c -o obj/util.o
