@@ -1,7 +1,7 @@
 OBJECTS = obj/ini.o obj/util.o
 
 build: FLAGS = -ggdb 
-build: build-lib build-test
+build: build-lib
 
 setup:
 	mkdir -p obj bin
